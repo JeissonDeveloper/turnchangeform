@@ -1,5 +1,5 @@
 // ============================================================================
-// JS CONTROL DE TURNOS - RAMO v1.2 (Compatibilidad PC + Celular Blindada)
+// JS CONTROL DE TURNOS - RAMO v1.3 (Compatibilidad PC + Celular Blindada)
 // ============================================================================
 
 // Endpoints de integración con los flujos de Power Automate
@@ -239,7 +239,7 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
         serial: valInput("serial"),
         
         estado_terminal: valSelect("estado_terminal"), obs_terminal: valInput("obs_terminal"),
-        grid_pantalla: valSelect("estado_pantalla"), obs_pantalla: valInput("obs_pantalla"),
+        estado_pantalla: valSelect("estado_pantalla"), obs_pantalla: valInput("obs_pantalla"),
         estado_bateria: valSelect("estado_bateria"), obs_bateria: valInput("obs_bateria"),
         estado_cargador: valSelect("estado_cargador"), obs_cargador: valInput("obs_cargador"),
         estado_cable: valSelect("estado_cable"), obs_cable: valInput("obs_cable"),
