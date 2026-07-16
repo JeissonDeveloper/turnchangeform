@@ -56,13 +56,25 @@
                     <label for="cedula">Cédula del Colaborador</label>
                     <div class="input-group-search">
                         <input type="text" id="cedula" placeholder="Digite cédula" required inputmode="numeric">
-                        <button type="button" class="btn-search" onclick="buscarColaborador()">Buscar</button>
+                        <button type="button" class="btn-search" id="btn-buscar-colaborador" onclick="buscarColaborador()">Buscar</button>
                     </div>
                     <div id="msg-colaborador" class="msg-estado"></div>
                 </div>
                 <div>
                     <label for="nombre_colaborador">Nombre Completo</label>
                     <input type="text" id="nombre_colaborador" class="input-readonly" readonly required placeholder="Se auto-completa al buscar">
+                </div>
+            </div>
+
+            <!-- Nuevos campos mapeados de la base de datos (Agencia y Teléfono) -->
+            <div class="grid-2" style="margin-top: 10px;">
+                <div>
+                    <label for="agencia">Agencia</label>
+                    <input type="text" id="agencia" class="input-readonly" readonly required placeholder="Automático">
+                </div>
+                <div>
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" id="telefono" class="input-readonly" readonly required placeholder="Automático">
                 </div>
             </div>
 
@@ -80,8 +92,9 @@
                     <input type="text" id="modelo" value="SM-G556B" class="input-readonly" readonly>
                 </div>
                 <div>
-                    <label for="serial">Serial del Equipo (Scan)</label>
-                    <input type="text" id="serial" placeholder="Escanee o digite el serial" required>
+                    <label for="serial">Serial del Equipo (MDM)</label>
+                    <!-- Bloqueado para que el operario no lo cambie -->
+                    <input type="text" id="serial" placeholder="Detectando desde SOTI..." class="input-readonly" required readonly>
                 </div>
             </div>
 
