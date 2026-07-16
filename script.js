@@ -1,5 +1,5 @@
 // ============================================================================
-// JS CONTROL DE TURNOS - RAMO (Lógica clonada 1:1 de v2.4 funcional)
+// JS CONTROL DE TURNOS - RAMO
 // ============================================================================
 
 const URL_BUSQUEDA = "https://defaultaf5eb6a454944a9ea659b79c92301b.8e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/aed1a8e6527c409fa89020e534c2b5c5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eO1cDqSsJme9vmuEXbqUEC0sZqHjRmJHA_a0_nqgH1U";
@@ -22,6 +22,8 @@ function mostrarPreview(datos) {
                 <div style="background:#f1f5f8; padding:15px; border-radius:8px; margin:15px 0;">
                     <p><strong>Recibe:</strong> ${datos.nombre_colaborador}</p>
                     <p><strong>Cédula:</strong> ${datos.cedula}</p>
+                    <p><strong>Agencia:</strong> ${datos.agencia}</p>
+                    <p><strong>Teléfono:</strong> ${datos.telefono}</p>
                     <p><strong>Área:</strong> ${datos.area}</p>
                     <p><strong>Equipo:</strong> ${datos.marca} ${datos.modelo}</p>
                     <p><strong>Serial:</strong> ${datos.serial}</p>
@@ -39,6 +41,7 @@ function mostrarPreview(datos) {
 
 function configurarFechaActual() {
     const ahora = new Date();
+    // Forzamos la zona horaria a Colombia para que siempre quede exacta
     const fechaColombia = new Date(ahora.toLocaleString("en-US", {timeZone: "America/Bogota"}));
     const año = fechaColombia.getFullYear();
     const mes = String(fechaColombia.getMonth() + 1).padStart(2, '0');
@@ -50,6 +53,7 @@ function configurarFechaActual() {
 document.addEventListener("DOMContentLoaded", () => {
     configurarFechaActual();
     
+    // Captura del serial inyectado por SOTI MobiControl
     const params = new URLSearchParams(window.location.search);
     if(params.get("serial")) {
         document.getElementById("serial").value = params.get("serial");
@@ -60,14 +64,20 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarBorrador();
 });
 
-window.buscarColaborador = () => realizarBusqueda(document.getElementById("cedula").value, 'colab');
-
-async function realizarBusqueda(cedula, tipo) {
-    if(!cedula) return;
-    const cleanCedula = cedula.trim();
-    const msg = document.getElementById("msg-colaborador");
+window.buscarColaborador = async () => {
+    const cedulaInput = document.getElementById("cedula");
+    if(!cedulaInput.value) return;
     
-    msg.innerText = "Consultando base de datos..."; msg.style.color = "var(--text-muted)";
+    const cleanCedula = cedulaInput.value.trim();
+    const msg = document.getElementById("msg-colaborador");
+    const btnBuscar = document.getElementById("btn-buscar-colaborador");
+    
+    // Indicador visual de carga
+    const originalText = btnBuscar.innerText;
+    btnBuscar.innerText = "⏳ Buscando...";
+    btnBuscar.disabled = true;
+    msg.innerText = "Consultando base de datos..."; 
+    msg.style.color = "var(--text-muted)";
 
     const urlSinCache = URL_BUSQUEDA + "&t=" + new Date().getTime();
 
@@ -85,23 +95,35 @@ async function realizarBusqueda(cedula, tipo) {
         const data = await resp.json();
 
         if (data && data.nombre_colaborador) {
-            msg.innerText = "✅ Información encontrada"; msg.style.color = "var(--success)";
-            llenarCampos(data, tipo);
+            msg.innerText = "✅ Información encontrada"; 
+            msg.style.color = "var(--success)";
+            
+            // Mapeo automático de los datos de la BD a los campos del formulario
+            document.getElementById('nombre_colaborador').value = data.nombre_colaborador || "";
+            document.getElementById('agencia').value = data.agencia || "";
+            document.getElementById('telefono').value = data.telefono || "";
+            
             guardarBorrador(); 
         } else {
-            msg.innerText = "❌ Cédula no registrada"; msg.style.color = "var(--error)";
+            msg.innerText = "❌ Cédula no registrada"; 
+            msg.style.color = "var(--error)";
+            document.getElementById('nombre_colaborador').value = "";
+            document.getElementById('agencia').value = "";
+            document.getElementById('telefono').value = "";
         }
     } catch (err) {
-        msg.innerText = "❌ Error de conexión"; msg.style.color = "var(--error)";
+        msg.innerText = "❌ Error de conexión"; 
+        msg.style.color = "var(--error)";
+    } finally {
+        // Restaurar el botón independientemente del resultado
+        btnBuscar.innerText = originalText;
+        btnBuscar.disabled = false;
     }
-}
+};
 
-function llenarCampos(data, tipo) {
-    if(tipo === 'colab') {
-        document.getElementById('nombre_colaborador').value = data.nombre_colaborador;
-    }
-}
-
+/* ============================================================================
+   FUNCIÓN ORIGINAL DE FIRMA (Extraída textualmente del archivo v2.4)
+   ============================================================================ */
 function setupCanvas(id) {
     const c = document.getElementById(id);
     const ctx = c.getContext("2d", { willReadFrequently: true }); 
@@ -194,10 +216,17 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (enviandoFormulario) return;
 
-    if (!document.getElementById("serial").value.trim() || !sigColab.isSigned()) {
-        mostrarNotificacion("Revisa: Serial y Firma del Colaborador son obligatorios.");
+    // Validación estricta: No se envía si el Serial está vacío o modificado
+    if (!document.getElementById("serial").value.trim()) {
+        mostrarNotificacion("Error: No se detectó el serial del equipo desde SOTI MobiControl. No puede registrar el turno.");
         return;
     }
+
+    if (!sigColab.isSigned()) {
+        mostrarNotificacion("La firma manuscrita del colaborador es obligatoria para validar el acta.");
+        return;
+    }
+    
     if (!document.getElementById("nombre_colaborador").value) {
         mostrarNotificacion("Por favor realice la búsqueda de la cédula.");
         return;
@@ -211,6 +240,8 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
         area: valInput("area"),
         cedula: valInput("cedula"),
         nombre_colaborador: valInput("nombre_colaborador"),
+        agencia: valInput("agencia"),
+        telefono: valInput("telefono"),
         marca: valInput("marca"),
         modelo: valInput("modelo"),
         serial: valInput("serial"),
@@ -232,14 +263,18 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
     
     enviandoFormulario = true;
     const btnEnviar = document.querySelector('.btn-principal');
-    document.getElementById("estado-envio").innerHTML = "Enviando acta, no cierre la ventana...";
+    document.getElementById("estado-envio").innerHTML = "Transmitiendo acta de turno, por favor espere...";
     btnEnviar.disabled = true;
 
     try {
-        const resp = await fetch(URL_ENVIO, { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(data) });
+        const resp = await fetch(URL_ENVIO, { 
+            method: "POST", 
+            headers: {"Content-Type":"application/json"}, 
+            body: JSON.stringify(data) 
+        });
         if(!resp.ok) throw new Error();
         
-        document.getElementById("estado-envio").innerHTML = "✅ ¡Acta enviada!";
+        document.getElementById("estado-envio").innerHTML = "✅ ¡Acta de Cambio de Turno registrada exitosamente!";
         document.getElementById("estado-envio").style.color = "green";
         
         setTimeout(() => {
@@ -249,14 +284,17 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
             
             localStorage.removeItem('borrador_turno_ramo'); 
             
-            enviandoFormulario = false; btnEnviar.disabled = false;
+            enviandoFormulario = false; 
+            btnEnviar.disabled = false;
             document.getElementById("estado-envio").innerHTML = "";
             document.getElementById("msg-colaborador").innerHTML = "";
         }, 2000);
         
     } catch(err) {
-        document.getElementById("estado-envio").innerHTML = "❌ Error al enviar.";
-        enviandoFormulario = false; btnEnviar.disabled = false;
+        document.getElementById("estado-envio").innerHTML = "❌ Error crítico al transmitir datos. Intente nuevamente.";
+        document.getElementById("estado-envio").style.color = "var(--error)";
+        enviandoFormulario = false; 
+        btnEnviar.disabled = false;
     }
 });
 
@@ -266,7 +304,7 @@ const serialValido = e => e.target.value = e.target.value.replace(/[^A-Za-z0-9\-
 ['cedula'].forEach(id => {
     document.getElementById(id)?.addEventListener("input", soloNumeros);
 });
-document.getElementById("serial").addEventListener("input", serialValido);
+// El serial no necesita listener de teclado porque está bloqueado (readonly)
 
 const guardarBorrador = () => {
     const datos = {};
