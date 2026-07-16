@@ -2,15 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta original restaurado para evitar que la pantalla salte o haga zoom al firmar en celular -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Ramo - Acta de Entrega y Cambio de Turno</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
     <div class="main-container">
-        <!-- Encabezado Corporativo Institucional -->
         <header>
             <img src="logo-ramo.png" alt="Logo Ramo" class="logo">
             <h1>Acta de Entrega y Cambio de Turno</h1>
@@ -19,19 +17,17 @@
             </p>
         </header>
 
-        <!-- Bloque Normativo y de Responsabilidad -->
-        <div class="condiciones-uso" style="background-color: #fbfbfb; border-left: 4px solid var(--accent);">
+        <div class="condiciones-uso" style="background-color: #fbfbfb; border-left: 4px solid #E3001B;">
             <h3 style="text-transform: uppercase; font-size: 0.95rem; letter-spacing: 0.5px;">
                 Responsabilidad sobre Herramientas de Trabajo
             </h3>
             <p style="text-align: justify; margin-top: 5px;">
-                El presente registro documenta la recepción del dispositivo móvil asignado como herramienta para el desarrollo de sus actividades operativas[cite: 4]. El colaborador que suscribe este documento certifica haber verificado el estado físico y técnico de los elementos relacionados en esta acta antes de proceder con su firma.
+                El presente registro documenta la recepción del dispositivo móvil asignado como herramienta para el desarrollo de sus actividades operativas. El colaborador que suscribe este documento certifica haber verificado el estado físico y técnico de los elementos relacionados en esta acta antes de proceder con su firma.
             </p>
         </div>
 
         <form id="formulario">
             
-            <!-- SECCIÓN 1: DATOS DEL COLABORADOR QUE RECIBE -->
             <div class="seccion-header">
                 <span class="numero">1</span> Datos del Colaborador
             </div>
@@ -70,8 +66,6 @@
                 </div>
             </div>
 
-
-            <!-- SECCIÓN 2: IDENTIFICACIÓN DEL DISPOSITIVO -->
             <div class="seccion-header">
                 <span class="numero">2</span> Información del Equipo
             </div>
@@ -91,14 +85,11 @@
                 </div>
             </div>
 
-
-            <!-- SECCIÓN 3: ESTADO DE CASILLAS ESPECÍFICAS -->
             <div class="seccion-header">
                 <span class="numero">3</span> Condiciones de Entrega
             </div>
 
             <div class="accesorios-grid">
-                <!-- Ítem: Terminal Móvil -->
                 <div class="accesorio-card">
                     <div class="acc-header">TERMINAL MÓVIL</div>
                     <div class="acc-row">
@@ -112,7 +103,6 @@
                     <input type="text" id="obs_terminal" placeholder="Observaciones de la terminal (Opcional)">
                 </div>
 
-                <!-- Ítem: Pantalla -->
                 <div class="accesorio-card">
                     <div class="acc-header">PANTALLA</div>
                     <div class="acc-row">
@@ -126,7 +116,6 @@
                     <input type="text" id="obs_pantalla" placeholder="Observaciones de pantalla (Opcional)">
                 </div>
 
-                <!-- Ítem: Batería -->
                 <div class="accesorio-card">
                     <div class="acc-header">BATERÍA</div>
                     <div class="acc-row">
@@ -140,7 +129,6 @@
                     <input type="text" id="obs_bateria" placeholder="Observaciones de batería (Opcional)">
                 </div>
 
-                <!-- Ítem: Cargador -->
                 <div class="accesorio-card">
                     <div class="acc-header">CARGADOR</div>
                     <div class="acc-row">
@@ -154,7 +142,6 @@
                     <input type="text" id="obs_cargador" placeholder="Observaciones de cargador (Opcional)">
                 </div>
 
-                <!-- Ítem: Cable Cargador -->
                 <div class="accesorio-card">
                     <div class="acc-header">CABLE CARGADOR</div>
                     <div class="acc-row">
@@ -168,7 +155,6 @@
                     <input type="text" id="obs_cable" placeholder="Observaciones de cable (Opcional)">
                 </div>
 
-                <!-- Ítem: SIM Card -->
                 <div class="accesorio-card">
                     <div class="acc-header">SIM CARD</div>
                     <div class="acc-row">
@@ -183,8 +169,6 @@
                 </div>
             </div>
 
-
-            <!-- SECCIÓN 4: FIRMA ÚNICA -->
             <div class="seccion-header">
                 <span class="numero">4</span> Confirmación y Firma
             </div>
@@ -197,7 +181,6 @@
                 </div>
             </div>
 
-            <!-- Zona de Envío -->
             <div style="text-align: center; margin-top: 20px;">
                 <div id="estado-envio" style="font-weight: bold; margin-bottom: 10px;"></div>
                 <button type="submit" class="btn-principal">✓ Registrar Cambio de Turno</button>
@@ -206,7 +189,7 @@
         </form>
     </div>
 
-    <!-- EL SCRIPT DEBE IR AQUÍ AL FINAL (Igual que en tu código funcional original) -->
+    <!-- SCRIPT UBICADO AL FINAL COMO EN EL ARCHIVO ORIGINAL -->
     <script src="script.js"></script>
 </body>
 </html>
