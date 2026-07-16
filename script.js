@@ -1,8 +1,7 @@
 // ============================================================================
-// JS CONTROL DE TURNOS - RAMO v1.3 (Compatibilidad PC + Celular Blindada)
+// JS CONTROL DE TURNOS - RAMO (Lógica de firma original restaurada)
 // ============================================================================
 
-// Endpoints de integración con los flujos de Power Automate
 const URL_BUSQUEDA = "https://defaultaf5eb6a454944a9ea659b79c92301b.8e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/aed1a8e6527c409fa89020e534c2b5c5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eO1cDqSsJme9vmuEXbqUEC0sZqHjRmJHA_a0_nqgH1U";
 const URL_ENVIO = "https://defaultaf5eb6a454944a9ea659b79c92301b.8e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/241ab4c9e8dd4b499963538107ded6ae/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=iOKsXvZTSJH4t6IdYRpY3v9ilpWpjChdJngf83FceoY";
 
@@ -13,7 +12,6 @@ function mostrarNotificacion(mensaje) {
     alert(mensaje); 
 }
 
-// Ventana emergente de confirmación de datos institucionales
 function mostrarPreview(datos) {
     return new Promise((resolve) => {
         const modal = document.createElement('div');
@@ -39,7 +37,6 @@ function mostrarPreview(datos) {
     });
 }
 
-// Configuración de fecha automática forzada a Zona Horaria Colombia (UTC-5)
 function configurarFechaActual() {
     const ahora = new Date();
     const fechaColombia = new Date(ahora.toLocaleString("en-US", {timeZone: "America/Bogota"}));
@@ -50,28 +47,21 @@ function configurarFechaActual() {
     document.getElementById("fecha").value = `${año}-${mes}-${dia}`;
 }
 
-// Bloque de carga inicial de la aplicación
 document.addEventListener("DOMContentLoaded", () => {
     configurarFechaActual();
     
-    // MECÁNICA AUTOMÁTICA SOTI MOBICONTROL: Captura el serial inyectado en la URL (?serial=...)[cite: 1, 3]
     const params = new URLSearchParams(window.location.search);
     if(params.get("serial")) {
         document.getElementById("serial").value = params.get("serial");
     }
     
-    // Inicialización del lienzo de dibujo
     sigColab = setupCanvas("canvas_colaborador");
-    
-    // Restauración de borrador local ante cierres fortuitos del WebView
     cargarBorrador();
     
-    // Registro de los filtros de entrada estrictos del teclado original[cite: 1]
     document.getElementById('cedula').addEventListener("input", soloNumeros);
     document.getElementById("serial").addEventListener("input", serialValido);
 });
 
-// Consulta a base de datos de colaboradores en tiempo real
 window.buscarColaborador = async () => {
     const cedulaInput = document.getElementById("cedula");
     if(!cedulaInput.value) return;
@@ -108,12 +98,14 @@ window.buscarColaborador = async () => {
             document.getElementById('nombre_colaborador').value = "";
         }
     } catch (err) {
-        msg.innerText = "❌ Error de conexión con el servidor"; 
+        msg.innerText = "❌ Error de conexión"; 
         msg.style.color = "var(--error)";
     }
 };
 
-// Motor de Lienzo Digital Ultra-Compatible (PC Mouse + Móvil Touch)[cite: 5]
+// ============================================================================
+// LÓGICA DE FIRMA ORIGINAL (Tomada textualmente del archivo funcional)
+// ============================================================================
 function setupCanvas(id) {
     const c = document.getElementById(id);
     const ctx = c.getContext("2d", { willReadFrequently: true }); 
@@ -126,93 +118,82 @@ function setupCanvas(id) {
         const ratio = Math.max(window.devicePixelRatio || 1, 1);
         if (wasUsed && c.width > 0) imageData = ctx.getImageData(0, 0, c.width, c.height);
         
-        // Control de redimensión con fallback seguro para prevenir lienzos en tamaño 0 en PC[cite: 2]
-        const anchoCalculado = c.offsetWidth || c.parentElement.offsetWidth || 300;
-        c.width = anchoCalculado * ratio; 
-        c.height = 160 * ratio;
-        ctx.scale(ratio, ratio); 
+        c.width = c.offsetWidth * ratio;[cite: 6]
+        c.height = 160 * ratio;[cite: 6]
+        ctx.scale(ratio, ratio);[cite: 6]
         
-        if (imageData) ctx.putImageData(imageData, 0, 0);
+        if (imageData) ctx.putImageData(imageData, 0, 0);[cite: 6]
     };
     
-    new ResizeObserver(() => resize()).observe(c);
-    resize();
+    new ResizeObserver(() => resize()).observe(c);[cite: 6]
+    resize();[cite: 6]
 
-    const drawLine = (p1, p2, pressure = 0.5) => {
-        const width = 1.5 + (pressure * 1.5);
-        ctx.strokeStyle = "rgba(10, 10, 10, 0.95)";
-        ctx.lineWidth = width;
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
+    const drawLine = (p1, p2, pressure = 0.5) => {[cite: 6]
+        const width = 1.5 + (pressure * 1.5);[cite: 6]
+        ctx.strokeStyle = "rgba(10, 10, 10, 0.95)";[cite: 6]
+        ctx.lineWidth = width;[cite: 6]
+        ctx.lineCap = "round";[cite: 6]
+        ctx.lineJoin = "round";[cite: 6]
         
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
+        ctx.beginPath();[cite: 6]
+        ctx.moveTo(p1.x, p1.y);[cite: 6]
+        ctx.lineTo(p2.x, p2.y);[cite: 6]
+        ctx.stroke();[cite: 6]
     };
 
-    const getPos = (e) => {
-        const rect = c.getBoundingClientRect();
+    const getPos = (e) => {[cite: 6]
+        const rect = c.getBoundingClientRect();[cite: 6]
         return { 
-            x: e.clientX - rect.left, 
-            y: e.clientY - rect.top,
-            pressure: e.pressure !== 0.5 && e.pressure > 0 ? e.pressure : 0.5 
+            x: e.clientX - rect.left,[cite: 6]
+            y: e.clientY - rect.top,[cite: 6]
+            pressure: e.pressure !== 0.5 && e.pressure > 0 ? e.pressure : 0.5 [cite: 6]
         };
     };
 
-    const start = (e) => {
-        e.preventDefault();
-        // Captura el puntero: Clave para que PC no pierda el trazo al arrastrar el mouse[cite: 5]
-        try { c.setPointerCapture(e.pointerId); } catch(err) {}
-        
-        drawing = true; wasUsed = true;
-        points = [getPos(e)];
-        c.classList.add('canvas-firmando');
+    const start = (e) => {[cite: 6]
+        e.preventDefault();[cite: 6]
+        drawing = true; wasUsed = true;[cite: 6]
+        points = [getPos(e)];[cite: 6]
+        c.classList.add('canvas-firmando');[cite: 6]
     };
     
-    const move = (e) => {
-        if(!drawing) return;
-        e.preventDefault();
-        const currentPos = getPos(e);
-        points.push(currentPos);
+    const move = (e) => {[cite: 6]
+        if(!drawing) return;[cite: 6]
+        e.preventDefault();[cite: 6]
+        const currentPos = getPos(e);[cite: 6]
+        points.push(currentPos);[cite: 6]
         
-        if(points.length > 1) {
-            drawLine(points[points.length-2], currentPos, currentPos.pressure);
+        if(points.length > 1) {[cite: 6]
+            drawLine(points[points.length-2], currentPos, currentPos.pressure);[cite: 6]
         }
     };
     
-    const end = (e) => { 
-        if (!drawing) return;
-        e.preventDefault();
-        // Libera de forma segura el control del puntero en escritorio[cite: 5]
-        try { c.releasePointerCapture(e.pointerId); } catch(err) {}
-        
-        drawing = false;
-        c.classList.remove('canvas-firmando');
-        guardarBorrador();
+    const end = (e) => {  [cite: 6]
+        if (!drawing) return;[cite: 6]
+        e.preventDefault();[cite: 6]
+        drawing = false;[cite: 6]
+        c.classList.remove('canvas-firmando');[cite: 6]
     };
 
-    c.style.touchAction = "none";
-    c.addEventListener("pointerdown", start); 
-    c.addEventListener("pointermove", move); 
-    c.addEventListener("pointerup", end);
-    c.addEventListener("pointercancel", end);
-    c.addEventListener("pointerout", end);
+    c.style.touchAction = "none";[cite: 6]
+    c.addEventListener("pointerdown", start);[cite: 6]
+    c.addEventListener("pointermove", move);[cite: 6]
+    c.addEventListener("pointerup", end);[cite: 6]
+    c.addEventListener("pointercancel", end);[cite: 6]
+    c.addEventListener("pointerout", end);[cite: 6]
     
     return {
         c, ctx, 
-        isSigned: () => wasUsed, 
-        reset: () => { 
-            wasUsed = false; drawing = false; imageData = null; points = [];
-            ctx.clearRect(0, 0, c.width, c.height);
-            guardarBorrador();
+        isSigned: () => wasUsed,[cite: 6]
+        reset: () => { [cite: 6]
+            wasUsed = false; drawing = false; imageData = null; points = [];[cite: 6]
+            ctx.clearRect(0, 0, c.width, c.height);[cite: 6]
         }
     };
 }
 
 window.limpiarFirma = (quien) => { if(quien === 'colab') sigColab.reset(); };
 
-// Validación, empaquetado y transmisión del formulario
 document.getElementById("formulario").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (enviandoFormulario) return;
@@ -245,7 +226,6 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
         estado_cable: valSelect("estado_cable"), obs_cable: valInput("obs_cable"),
         estado_sim: valSelect("estado_sim"), obs_sim: valInput("obs_sim"),
         
-        // Mapeos y compatibilidad con campos fijos de la plantilla de Word formal[cite: 4]
         tipo_equipo: "Smartphone",
         entrega_estuche: "No", 
         estado_estuche: "Malo",
@@ -291,14 +271,8 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
     }
 });
 
-// Mecánica Original de expresiones regulares para filtros de campos[cite: 1]
 const soloNumeros = e => e.target.value = e.target.value.replace(/[^0-9]/g, "");
 const serialValido = e => e.target.value = e.target.value.replace(/[^A-Za-z0-9\-_]/g, "").toUpperCase();
-
-
-// ============================================================================
-// SISTEMA DE RESPALDO Y AUTO-GUARDADO (Local Storage)
-// ============================================================================
 
 const guardarBorrador = () => {
     const datos = {};
