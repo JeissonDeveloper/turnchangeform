@@ -22,7 +22,6 @@ function mostrarPreview(datos) {
                 <div style="background:#f1f5f8; padding:15px; border-radius:8px; margin:15px 0;">
                     <p><strong>Recibe:</strong> ${datos.nombre_colaborador}</p>
                     <p><strong>Cédula:</strong> ${datos.cedula}</p>
-                    <p><strong>Teléfono:</strong> ${datos.telefono}</p>
                     <p><strong>Área:</strong> ${datos.area}</p>
                     <p><strong>Equipo:</strong> ${datos.marca} ${datos.modelo}</p>
                     <p><strong>Serial:</strong> ${datos.serial}</p>
@@ -97,16 +96,14 @@ window.buscarColaborador = async () => {
             msg.innerText = "✅ Información encontrada"; 
             msg.style.color = "var(--success)";
             
-            // Mapeo automático de los datos de la BD (sin agencia)
+            // Mapeo automático de los datos de la BD (sin agencia ni teléfono)
             document.getElementById('nombre_colaborador').value = data.nombre_colaborador || "";
-            document.getElementById('telefono').value = data.telefono || "";
             
             guardarBorrador(); 
         } else {
             msg.innerText = "❌ Cédula no registrada"; 
             msg.style.color = "var(--error)";
             document.getElementById('nombre_colaborador').value = "";
-            document.getElementById('telefono').value = "";
         }
     } catch (err) {
         msg.innerText = "❌ Error de conexión"; 
@@ -234,7 +231,6 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
         area: valInput("area"),
         cedula: valInput("cedula"),
         nombre_colaborador: valInput("nombre_colaborador"),
-        telefono: valInput("telefono"),
         marca: valInput("marca"),
         modelo: valInput("modelo"),
         serial: valInput("serial"),
