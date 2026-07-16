@@ -1,23 +1,21 @@
 /* ============================================================================
-   ACTA DE ENTREGA Y CONTROL DE TURNOS RAMO - DISEÑO OPTIMIZADO PARA MÓVILES
+   ACTA DE ENTREGA Y CONTROL DE TURNOS RAMO - ESTILOS MÓVILES
    ============================================================================ */
 
 :root {
-    /* Paleta de Colores Institucionales Ramo */
-    --brand-blue: #159DE1;
-    --brand-blue-dark: #1080B8;
-    --brand-blue-pastel: #E8F6FC;
-    --ramo-red: #E3001B;
+    var(--brand-blue): #159DE1;
+    var(--brand-blue-dark): #1080B8;
+    var(--brand-blue-pastel): #E8F6FC;
+    var(--ramo-red): #E3001B;
     
-    /* Variables de Interfaz */
-    --primary: var(--brand-blue);
-    --primary-dark: var(--brand-blue-dark);
-    --accent: var(--ramo-red);
+    --primary: #159DE1;
+    --primary-dark: #1080B8;
+    --accent: #E3001B;
     
     --success: #4CAF50;
     --error: #dc3545;
     
-    --bg-main: var(--brand-blue-pastel);
+    --bg-main: #E8F6FC;
     --text-main: #2c3e50;
     --text-muted: #6c757d;
     --border-color: #d1e5ef;
@@ -26,11 +24,7 @@
     --shadow-md: 0 8px 24px rgba(21, 157, 225, 0.15);
 }
 
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body, html {
     font-family: system-ui, -apple-system, sans-serif;
@@ -41,300 +35,130 @@ body, html {
 }
 
 .main-container {
-    max-width: 900px; 
-    margin: 20px auto;
+    max-width: 900px; margin: 20px auto;
     background-color: var(--card-bg);
-    border-radius: 12px; 
-    box-shadow: var(--shadow-md);
-    overflow: hidden; 
-    padding-bottom: 40px;
-    transform: translateZ(0); /* Aceleración por GPU para dispositivos móviles */
+    border-radius: 12px; box-shadow: var(--shadow-md);
+    overflow: hidden; padding-bottom: 40px;
+    transform: translateZ(0);
 }
 
-/* --- ENCABEZADO --- */
 header {
-    text-align: center; 
-    padding: 25px 20px;
+    text-align: center; padding: 30px 20px;
     background-color: var(--primary);
+    position: relative; overflow: hidden;
     border-bottom: 4px solid var(--accent);
 }
 
 .logo { 
-    max-width: 150px; 
-    margin-bottom: 12px; 
-    display: block;
-    margin-left: auto; 
-    margin-right: auto;
+    max-width: 180px; margin-bottom: 15px; display: block;
+    margin-left: auto; margin-right: auto;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
-h1 { 
-    font-size: 1.3rem; 
-    color: #fff; 
-    margin: 0; 
-    font-weight: 700; 
-    text-transform: uppercase; 
-    letter-spacing: 0.5px;
-}
+h1 { font-size: 1.4rem; color: #fff; margin: 0; font-weight: 700; text-transform: uppercase; }
 
-/* --- BLOQUE NORMATIVO / CONDICIONES --- */
 .condiciones-uso {
-    margin: 20px; 
-    padding: 15px; 
-    font-size: 0.85rem; 
-    color: #444;
+    background-color: #fff9fa; border-left: 4px solid var(--accent);
+    margin: 20px; padding: 15px; font-size: 0.85rem; color: #555;
     border-radius: 8px;
-    border: 1px solid var(--border-color);
 }
+.condiciones-uso h3 { color: var(--accent); margin-bottom: 8px; font-size: 1rem; }
 
-.condiciones-uso h3 { 
-    color: var(--text-main); 
-    font-weight: 700;
-}
-
-/* --- FORMULARIO Y SECCIONES --- */
-form { 
-    padding: 0 20px; 
-}
+form { padding: 0 25px; }
 
 .seccion-header {
-    background-color: #2c3e50; 
-    color: #fff;
-    padding: 10px 15px; 
-    margin-top: 25px; 
-    margin-bottom: 15px;
-    border-radius: 8px; 
-    font-weight: 600; 
-    font-size: 0.95rem;
-    display: flex; 
-    align-items: center;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    background-color: #2c3e50; color: #fff;
+    padding: 12px 15px; margin-top: 25px; margin-bottom: 15px;
+    border-radius: 8px; font-weight: 600; display: flex; align-items: center;
 }
 
 .seccion-header .numero {
-    background-color: var(--primary); 
-    color: white;
-    width: 24px; 
-    height: 24px; 
-    border-radius: 50%; 
-    display: flex;
-    align-items: center; 
-    justify-content: center; 
-    margin-right: 12px;
-    font-size: 0.85rem;
+    background-color: var(--primary); color: white;
+    width: 30px; height: 30px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; margin-right: 12px;
 }
 
-/* --- REJILLAS (GRID) REUTILIZABLES --- */
-.grid-2 { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 15px; 
-}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
 
-.grid-3 { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr 1fr; 
-    gap: 15px; 
-}
-
-label { 
-    display: block; 
-    margin-top: 10px; 
-    margin-bottom: 5px; 
-    font-weight: 600; 
-    font-size: 0.85rem; 
-}
+label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
 
 input, select, textarea {
-    width: 100%; 
-    padding: 12px;
-    border: 2px solid var(--border-color); 
-    border-radius: 8px;
-    font-size: 16px; /* Evita que Android haga zoom automático al enfocar */
+    width: 100%; padding: 12px;
+    border: 2px solid var(--border-color); border-radius: 8px;
+    font-size: 16px; 
     background-color: #fafcfd;
-    color: var(--text-main);
-    transition: border-color 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 input:focus, select:focus, textarea:focus {
-    outline: none; 
+    outline: none; background-color: #fff;
     border-color: var(--primary);
-    background-color: #fff;
 }
 
 .input-readonly {
-    background-color: #f1f5f8; 
-    color: var(--text-muted); 
-    cursor: not-allowed; 
-    opacity: 0.9;
+    background-color: #f1f5f8; color: var(--text-muted); cursor: not-allowed; opacity: 0.8;
 }
 
-/* --- COMPONENTE DE BÚSQUEDA --- */
-.input-group-search { 
-    display: flex; 
-    gap: 8px; 
-    align-items: stretch; 
-}
-
+.input-group-search { display: flex; gap: 10px; align-items: stretch; }
 .btn-search {
-    background-color: var(--primary); 
-    color: white; 
-    border: none;
-    padding: 0 20px; 
-    border-radius: 8px; 
-    font-weight: 600;
-    cursor: pointer; 
-    display: flex; 
-    align-items: center;
-    font-size: 0.9rem;
+    background-color: var(--primary); color: white; border: none;
+    padding: 0 20px; border-radius: 8px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center;
 }
+.btn-search:active { background-color: var(--primary-dark); }
+.msg-estado { margin-top: 5px; font-size: 0.85rem; font-weight: 600; min-height: 20px; }
 
-.btn-search:active { 
-    background-color: var(--primary-dark); 
-}
-
-.msg-estado { 
-    margin-top: 5px; 
-    font-size: 0.8rem; 
-    font-weight: 600; 
-    min-height: 18px; 
-}
-
-/* --- TARJETAS DE CONDICIONES Y ACCESORIOS --- */
-.accesorios-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
-    gap: 15px; 
-    margin-top: 15px; 
-}
-
+.accesorios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
 .accesorio-card {
-    background: var(--card-bg); 
-    border: 2px solid var(--border-color);
-    border-radius: 12px; 
-    padding: 15px;
-    transform: translateZ(0);
+    background: var(--card-bg); border: 2px solid var(--border-color);
+    border-radius: 12px; padding: 15px;
+    will-change: transform; transform: translateZ(0);
 }
+.acc-header { font-weight: bold; color: var(--primary); border-bottom: 2px solid #E8F6FC; padding-bottom: 8px; margin-bottom: 12px; }
+.acc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.acc-label { font-size: 0.9rem; color: var(--text-muted); }
 
-.acc-header { 
-    font-weight: 700; 
-    color: var(--primary); 
-    border-bottom: 2px solid var(--brand-blue-pastel); 
-    padding-bottom: 6px; 
-    margin-bottom: 12px;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-}
-
-.acc-row { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    margin-bottom: 10px; 
-}
-
-.acc-label { 
-    font-size: 0.85rem; 
-    color: var(--text-main); 
-    font-weight: 600;
-}
-
-.accesorio-card select {
-    width: 60%;
-    padding: 8px;
-    font-size: 0.9rem;
-}
-
-.accesorio-card input[type="text"] {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-    margin-top: 5px;
-}
-
-/* --- ÁREA DE FIRMA --- */
-.firmas-wrapper { 
-    margin-top: 15px; 
-}
-
-.firma-card { 
-    border: 2px solid var(--border-color); 
-    padding: 15px; 
-    text-align: center; 
-    border-radius: 12px; 
-    background-color: #fff; 
-}
+/* --- ESTILOS DE FIRMA EXACTOS DEL ORIGINAL --- */
+.firmas-wrapper { margin-top: 15px; gap: 15px; }
+.firma-card { border: 2px solid var(--border-color); padding: 15px; text-align: center; border-radius: 12px; background-color: #fff; }
 
 .canvas-firma {
-    border: 2px dashed #b5d5e5; 
-    background: #ffffff;
-    width: 100%; 
-    height: 160px; 
-    border-radius: 8px;
-    touch-action: none; 
-    user-select: none;
+    border: 2px dashed #b5d5e5; background: #fff;
+    width: 100%; height: 160px; border-radius: 8px;
+    touch-action: none; user-select: none;
 }
 
-.canvas-firmando { 
-    border: 2px solid var(--primary) !important; 
-}
+.canvas-firmando { border: 2px solid var(--primary) !important; }
+.btn-clear { background: #f1f5f8; border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; margin-top: 10px; }
 
-.btn-clear { 
-    background: #f1f5f8; 
-    border: 1px solid var(--border-color); 
-    padding: 8px 16px; 
-    border-radius: 6px; 
-    margin-top: 10px; 
-    font-size: 0.85rem;
-    cursor: pointer;
-    color: var(--text-main);
-    font-weight: 600;
-}
-
-.btn-clear:active {
-    background: #e2e8f0;
-}
-
-/* --- BOTÓN DE ENVÍO PRINCIPAL --- */
 .btn-principal {
-    width: 100%; 
-    padding: 15px;
+    width: 100%; padding: 16px;
     background-color: var(--accent); 
-    color: white; 
-    border: none; 
-    border-radius: 10px;
-    font-size: 1rem; 
-    font-weight: 700; 
-    margin-top: 25px;
-    text-transform: uppercase; 
-    letter-spacing: 1px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(227, 0, 27, 0.2);
+    color: white; border: none; border-radius: 10px;
+    font-size: 1.1rem; font-weight: 700; margin-top: 25px;
+    text-transform: uppercase; letter-spacing: 1px;
 }
+.btn-principal:active { background-color: #a00013; }
+.btn-principal:disabled { opacity: 0.6; }
 
-.btn-principal:active { 
-    background-color: #b80014; 
+.modal-preview-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(21, 157, 225, 0.4); 
+    z-index: 10002; display: flex; align-items: center; justify-content: center;
 }
-
-.btn-principal:disabled { 
-    opacity: 0.5; 
-    cursor: not-allowed; 
+.modal-preview-content {
+    background: #fff; padding: 25px; border-radius: 12px;
+    width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
+.modal-preview-buttons button { padding: 12px 20px; border-radius: 8px; font-weight: bold; border: none; }
+#btn-cancelar-preview { background: #e0e0e0; color: #333; margin-right: 10px; }
+#btn-confirmar-preview { background: var(--success); color: white; }
 
-/* --- RESPONSIVE / ADAPTACIÓN PANTALLAS CHICAS --- */
 @media (max-width: 768px) {
-    .main-container { 
-        margin: 0; 
-        border-radius: 0; 
-        box-shadow: none; 
-    }
-    
-    .grid-2, .grid-3 { 
-        grid-template-columns: 1fr; 
-        gap: 10px;
-    }
-    
-    form {
-        padding: 0 15px;
-    }
+    .main-container { margin: 0; border-radius: 0; box-shadow: none; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .input-group-search { flex-direction: column; }
+    .btn-search { width: 100%; padding: 12px; justify-content: center; }
 }
