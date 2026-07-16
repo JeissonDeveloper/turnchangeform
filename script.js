@@ -1,5 +1,5 @@
 // ============================================================================
-// JS CONTROL DE TURNOS - RAMO
+// JS CONTROL DE TURNOS - RAMO (Lógica clonada 1:1 de v2.4 funcional)
 // ============================================================================
 
 const URL_BUSQUEDA = "https://defaultaf5eb6a454944a9ea659b79c92301b.8e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/aed1a8e6527c409fa89020e534c2b5c5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eO1cDqSsJme9vmuEXbqUEC0sZqHjRmJHA_a0_nqgH1U";
@@ -18,17 +18,17 @@ function mostrarPreview(datos) {
         modal.className = 'modal-preview-overlay';
         modal.innerHTML = `
             <div class="modal-preview-content">
-                <h2 style="color:var(--primary); margin-top:0; font-size:1.2rem; text-transform:uppercase;">Confirmar Registro</h2>
-                <div style="background:#f1f5f8; padding:15px; border-radius:8px; margin:15px 0; font-size:0.9rem; line-height:1.5;">
-                    <p><strong>Colaborador:</strong> ${datos.nombre_colaborador}</p>
+                <h2 style="color:var(--primary); margin-top:0;">Confirmar Registro</h2>
+                <div style="background:#f1f5f8; padding:15px; border-radius:8px; margin:15px 0;">
+                    <p><strong>Recibe:</strong> ${datos.nombre_colaborador}</p>
                     <p><strong>Cédula:</strong> ${datos.cedula}</p>
                     <p><strong>Área:</strong> ${datos.area}</p>
                     <p><strong>Equipo:</strong> ${datos.marca} ${datos.modelo}</p>
                     <p><strong>Serial:</strong> ${datos.serial}</p>
                 </div>
-                <div class="modal-preview-buttons" style="display:flex; justify-content:flex-end;">
+                <div class="modal-preview-buttons">
                     <button id="btn-cancelar-preview">Cancelar</button>
-                    <button id="btn-confirmar-preview" style="background:var(--success); color:white; margin-left:10px;">✓ Confirmar</button>
+                    <button id="btn-confirmar-preview">✓ Enviar</button>
                 </div>
             </div>`;
         document.body.appendChild(modal);
@@ -58,20 +58,16 @@ document.addEventListener("DOMContentLoaded", () => {
     sigColab = setupCanvas("canvas_colaborador");
     
     cargarBorrador();
-    
-    document.getElementById('cedula').addEventListener("input", soloNumeros);
-    document.getElementById("serial").addEventListener("input", serialValido);
 });
 
-window.buscarColaborador = async () => {
-    const cedulaInput = document.getElementById("cedula");
-    if(!cedulaInput.value) return;
-    
-    const cleanCedula = cedulaInput.value.trim();
+window.buscarColaborador = () => realizarBusqueda(document.getElementById("cedula").value, 'colab');
+
+async function realizarBusqueda(cedula, tipo) {
+    if(!cedula) return;
+    const cleanCedula = cedula.trim();
     const msg = document.getElementById("msg-colaborador");
     
-    msg.innerText = "Consultando base de datos..."; 
-    msg.style.color = "var(--text-muted)";
+    msg.innerText = "Consultando base de datos..."; msg.style.color = "var(--text-muted)";
 
     const urlSinCache = URL_BUSQUEDA + "&t=" + new Date().getTime();
 
@@ -89,24 +85,23 @@ window.buscarColaborador = async () => {
         const data = await resp.json();
 
         if (data && data.nombre_colaborador) {
-            msg.innerText = "✅ Colaborador encontrado"; 
-            msg.style.color = "var(--success)";
-            document.getElementById('nombre_colaborador').value = data.nombre_colaborador;
+            msg.innerText = "✅ Información encontrada"; msg.style.color = "var(--success)";
+            llenarCampos(data, tipo);
             guardarBorrador(); 
         } else {
-            msg.innerText = "❌ Cédula no registrada"; 
-            msg.style.color = "var(--error)";
-            document.getElementById('nombre_colaborador').value = "";
+            msg.innerText = "❌ Cédula no registrada"; msg.style.color = "var(--error)";
         }
     } catch (err) {
-        msg.innerText = "❌ Error de conexión"; 
-        msg.style.color = "var(--error)";
+        msg.innerText = "❌ Error de conexión"; msg.style.color = "var(--error)";
     }
-};
+}
 
-/* ============================================================================
-   FUNCIÓN ORIGINAL DE FIRMA (Extraída textualmente del archivo v2.4)
-   ============================================================================ */
+function llenarCampos(data, tipo) {
+    if(tipo === 'colab') {
+        document.getElementById('nombre_colaborador').value = data.nombre_colaborador;
+    }
+}
+
 function setupCanvas(id) {
     const c = document.getElementById(id);
     const ctx = c.getContext("2d", { willReadFrequently: true }); 
@@ -119,92 +114,92 @@ function setupCanvas(id) {
         const ratio = Math.max(window.devicePixelRatio || 1, 1);
         if (wasUsed && c.width > 0) imageData = ctx.getImageData(0, 0, c.width, c.height);
         
-        c.width = c.offsetWidth * ratio;[cite: 10]
-        c.height = 160 * ratio;[cite: 10]
-        ctx.scale(ratio, ratio);[cite: 10]
+        c.width = c.offsetWidth * ratio;
+        c.height = 160 * ratio;
+        ctx.scale(ratio, ratio);
         
-        if (imageData) ctx.putImageData(imageData, 0, 0);[cite: 10]
+        if (imageData) ctx.putImageData(imageData, 0, 0);
     };
     
-    new ResizeObserver(() => resize()).observe(c);[cite: 10]
-    resize();[cite: 10]
+    new ResizeObserver(() => resize()).observe(c);
+    resize();
 
-    const drawLine = (p1, p2, pressure = 0.5) => {[cite: 10]
-        const width = 1.5 + (pressure * 1.5);[cite: 10]
-        ctx.strokeStyle = "rgba(10, 10, 10, 0.95)";[cite: 10]
-        ctx.lineWidth = width;[cite: 10]
-        ctx.lineCap = "round";[cite: 10]
-        ctx.lineJoin = "round";[cite: 10]
+    const drawLine = (p1, p2, pressure = 0.5) => {
+        const width = 1.5 + (pressure * 1.5);
+        ctx.strokeStyle = "rgba(10, 10, 10, 0.95)";
+        ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
         
-        ctx.beginPath();[cite: 10]
-        ctx.moveTo(p1.x, p1.y);[cite: 10]
-        ctx.lineTo(p2.x, p2.y);[cite: 10]
-        ctx.stroke();[cite: 10]
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
     };
 
-    const getPos = (e) => {[cite: 10]
-        const rect = c.getBoundingClientRect();[cite: 10]
-        return { [cite: 10]
-            x: e.clientX - rect.left,[cite: 10]
-            y: e.clientY - rect.top,[cite: 10]
-            pressure: e.pressure !== 0.5 && e.pressure > 0 ? e.pressure : 0.5 [cite: 10]
+    const getPos = (e) => {
+        const rect = c.getBoundingClientRect();
+        return { 
+            x: e.clientX - rect.left, 
+            y: e.clientY - rect.top,
+            pressure: e.pressure !== 0.5 && e.pressure > 0 ? e.pressure : 0.5 
         };
     };
 
-    const start = (e) => {[cite: 10]
-        e.preventDefault();[cite: 10]
-        drawing = true; wasUsed = true;[cite: 10]
-        points = [getPos(e)];[cite: 10]
-        c.classList.add('canvas-firmando');[cite: 10]
+    const start = (e) => {
+        e.preventDefault();
+        drawing = true; wasUsed = true;
+        points = [getPos(e)];
+        c.classList.add('canvas-firmando');
     };
     
-    const move = (e) => {[cite: 10]
-        if(!drawing) return;[cite: 10]
-        e.preventDefault();[cite: 10]
-        const currentPos = getPos(e);[cite: 10]
-        points.push(currentPos);[cite: 10]
+    const move = (e) => {
+        if(!drawing) return;
+        e.preventDefault();
+        const currentPos = getPos(e);
+        points.push(currentPos);
         
-        if(points.length > 1) {[cite: 10]
-            drawLine(points[points.length-2], currentPos, currentPos.pressure);[cite: 10]
+        if(points.length > 1) {
+            drawLine(points[points.length-2], currentPos, currentPos.pressure);
         }
     };
     
-    const end = (e) => { [cite: 10]
-        if (!drawing) return;[cite: 10]
-        e.preventDefault();[cite: 10]
-        drawing = false;[cite: 10]
-        c.classList.remove('canvas-firmando');[cite: 10]
+    const end = (e) => { 
+        if (!drawing) return;
+        e.preventDefault();
+        drawing = false;
+        c.classList.remove('canvas-firmando');
     };
 
-    c.style.touchAction = "none";[cite: 10]
-    c.addEventListener("pointerdown", start);[cite: 10]
-    c.addEventListener("pointermove", move);[cite: 10]
-    c.addEventListener("pointerup", end);[cite: 10]
-    c.addEventListener("pointercancel", end);[cite: 10]
-    c.addEventListener("pointerout", end);[cite: 10]
+    c.style.touchAction = "none";
+    c.addEventListener("pointerdown", start); 
+    c.addEventListener("pointermove", move); 
+    c.addEventListener("pointerup", end);
+    c.addEventListener("pointercancel", end);
+    c.addEventListener("pointerout", end);
     
     return {
         c, ctx, 
-        isSigned: () => wasUsed,[cite: 10]
-        reset: () => { [cite: 10]
-            wasUsed = false; drawing = false; imageData = null; points = [];[cite: 10]
-            ctx.clearRect(0, 0, c.width, c.height);[cite: 10]
+        isSigned: () => wasUsed, 
+        reset: () => { 
+            wasUsed = false; drawing = false; imageData = null; points = [];
+            ctx.clearRect(0, 0, c.width, c.height);
         }
     };
 }
 
-window.limpiarFirma = (quien) => { if(quien === 'colab') sigColab.reset(); };
+window.limpiarFirma = (quien) => { if (quien === 'colab') sigColab.reset(); };
 
 document.getElementById("formulario").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (enviandoFormulario) return;
 
-    if (!sigColab.isSigned()) {
-        mostrarNotificacion("La firma manuscrita del colaborador es obligatoria para validar el acta.");
+    if (!document.getElementById("serial").value.trim() || !sigColab.isSigned()) {
+        mostrarNotificacion("Revisa: Serial y Firma del Colaborador son obligatorios.");
         return;
     }
     if (!document.getElementById("nombre_colaborador").value) {
-        mostrarNotificacion("Por favor realice la búsqueda de la cédula para verificar el nombre del colaborador.");
+        mostrarNotificacion("Por favor realice la búsqueda de la cédula.");
         return;
     }
 
@@ -237,18 +232,14 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
     
     enviandoFormulario = true;
     const btnEnviar = document.querySelector('.btn-principal');
-    document.getElementById("estado-envio").innerHTML = "Transmitiendo acta de turno, por favor espere...";
+    document.getElementById("estado-envio").innerHTML = "Enviando acta, no cierre la ventana...";
     btnEnviar.disabled = true;
 
     try {
-        const resp = await fetch(URL_ENVIO, { 
-            method: "POST", 
-            headers: {"Content-Type":"application/json"}, 
-            body: JSON.stringify(data) 
-        });
+        const resp = await fetch(URL_ENVIO, { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(data) });
         if(!resp.ok) throw new Error();
         
-        document.getElementById("estado-envio").innerHTML = "✅ ¡Acta de Cambio de Turno registrada exitosamente!";
+        document.getElementById("estado-envio").innerHTML = "✅ ¡Acta enviada!";
         document.getElementById("estado-envio").style.color = "green";
         
         setTimeout(() => {
@@ -258,22 +249,24 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
             
             localStorage.removeItem('borrador_turno_ramo'); 
             
-            enviandoFormulario = false; 
-            btnEnviar.disabled = false;
+            enviandoFormulario = false; btnEnviar.disabled = false;
             document.getElementById("estado-envio").innerHTML = "";
             document.getElementById("msg-colaborador").innerHTML = "";
         }, 2000);
         
     } catch(err) {
-        document.getElementById("estado-envio").innerHTML = "❌ Error crítico al transmitir datos. Intente nuevamente.";
-        document.getElementById("estado-envio").style.color = "var(--error)";
-        enviandoFormulario = false; 
-        btnEnviar.disabled = false;
+        document.getElementById("estado-envio").innerHTML = "❌ Error al enviar.";
+        enviandoFormulario = false; btnEnviar.disabled = false;
     }
 });
 
 const soloNumeros = e => e.target.value = e.target.value.replace(/[^0-9]/g, "");
 const serialValido = e => e.target.value = e.target.value.replace(/[^A-Za-z0-9\-_]/g, "").toUpperCase();
+
+['cedula'].forEach(id => {
+    document.getElementById(id)?.addEventListener("input", soloNumeros);
+});
+document.getElementById("serial").addEventListener("input", serialValido);
 
 const guardarBorrador = () => {
     const datos = {};
@@ -294,7 +287,7 @@ const cargarBorrador = () => {
                 }
             });
         } catch(e) {
-            console.error("Error al restaurar estado del formulario");
+            console.error("Error cargando borrador");
         }
     }
 };
