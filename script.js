@@ -1,5 +1,5 @@
 // ============================================================================
-// JS CONTROL DE TURNOS - RAMO (Lógica de firma original restaurada)
+// JS CONTROL DE TURNOS - RAMO
 // ============================================================================
 
 const URL_BUSQUEDA = "https://defaultaf5eb6a454944a9ea659b79c92301b.8e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/aed1a8e6527c409fa89020e534c2b5c5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eO1cDqSsJme9vmuEXbqUEC0sZqHjRmJHA_a0_nqgH1U";
@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     sigColab = setupCanvas("canvas_colaborador");
+    
     cargarBorrador();
     
     document.getElementById('cedula').addEventListener("input", soloNumeros);
@@ -103,9 +104,9 @@ window.buscarColaborador = async () => {
     }
 };
 
-// ============================================================================
-// LÓGICA DE FIRMA ORIGINAL (Tomada textualmente del archivo funcional)
-// ============================================================================
+/* ============================================================================
+   FUNCIÓN ORIGINAL DE FIRMA (Extraída textualmente del archivo v2.4)
+   ============================================================================ */
 function setupCanvas(id) {
     const c = document.getElementById(id);
     const ctx = c.getContext("2d", { willReadFrequently: true }); 
@@ -118,76 +119,76 @@ function setupCanvas(id) {
         const ratio = Math.max(window.devicePixelRatio || 1, 1);
         if (wasUsed && c.width > 0) imageData = ctx.getImageData(0, 0, c.width, c.height);
         
-        c.width = c.offsetWidth * ratio;[cite: 6]
-        c.height = 160 * ratio;[cite: 6]
-        ctx.scale(ratio, ratio);[cite: 6]
+        c.width = c.offsetWidth * ratio;[cite: 10]
+        c.height = 160 * ratio;[cite: 10]
+        ctx.scale(ratio, ratio);[cite: 10]
         
-        if (imageData) ctx.putImageData(imageData, 0, 0);[cite: 6]
+        if (imageData) ctx.putImageData(imageData, 0, 0);[cite: 10]
     };
     
-    new ResizeObserver(() => resize()).observe(c);[cite: 6]
-    resize();[cite: 6]
+    new ResizeObserver(() => resize()).observe(c);[cite: 10]
+    resize();[cite: 10]
 
-    const drawLine = (p1, p2, pressure = 0.5) => {[cite: 6]
-        const width = 1.5 + (pressure * 1.5);[cite: 6]
-        ctx.strokeStyle = "rgba(10, 10, 10, 0.95)";[cite: 6]
-        ctx.lineWidth = width;[cite: 6]
-        ctx.lineCap = "round";[cite: 6]
-        ctx.lineJoin = "round";[cite: 6]
+    const drawLine = (p1, p2, pressure = 0.5) => {[cite: 10]
+        const width = 1.5 + (pressure * 1.5);[cite: 10]
+        ctx.strokeStyle = "rgba(10, 10, 10, 0.95)";[cite: 10]
+        ctx.lineWidth = width;[cite: 10]
+        ctx.lineCap = "round";[cite: 10]
+        ctx.lineJoin = "round";[cite: 10]
         
-        ctx.beginPath();[cite: 6]
-        ctx.moveTo(p1.x, p1.y);[cite: 6]
-        ctx.lineTo(p2.x, p2.y);[cite: 6]
-        ctx.stroke();[cite: 6]
+        ctx.beginPath();[cite: 10]
+        ctx.moveTo(p1.x, p1.y);[cite: 10]
+        ctx.lineTo(p2.x, p2.y);[cite: 10]
+        ctx.stroke();[cite: 10]
     };
 
-    const getPos = (e) => {[cite: 6]
-        const rect = c.getBoundingClientRect();[cite: 6]
-        return { 
-            x: e.clientX - rect.left,[cite: 6]
-            y: e.clientY - rect.top,[cite: 6]
-            pressure: e.pressure !== 0.5 && e.pressure > 0 ? e.pressure : 0.5 [cite: 6]
+    const getPos = (e) => {[cite: 10]
+        const rect = c.getBoundingClientRect();[cite: 10]
+        return { [cite: 10]
+            x: e.clientX - rect.left,[cite: 10]
+            y: e.clientY - rect.top,[cite: 10]
+            pressure: e.pressure !== 0.5 && e.pressure > 0 ? e.pressure : 0.5 [cite: 10]
         };
     };
 
-    const start = (e) => {[cite: 6]
-        e.preventDefault();[cite: 6]
-        drawing = true; wasUsed = true;[cite: 6]
-        points = [getPos(e)];[cite: 6]
-        c.classList.add('canvas-firmando');[cite: 6]
+    const start = (e) => {[cite: 10]
+        e.preventDefault();[cite: 10]
+        drawing = true; wasUsed = true;[cite: 10]
+        points = [getPos(e)];[cite: 10]
+        c.classList.add('canvas-firmando');[cite: 10]
     };
     
-    const move = (e) => {[cite: 6]
-        if(!drawing) return;[cite: 6]
-        e.preventDefault();[cite: 6]
-        const currentPos = getPos(e);[cite: 6]
-        points.push(currentPos);[cite: 6]
+    const move = (e) => {[cite: 10]
+        if(!drawing) return;[cite: 10]
+        e.preventDefault();[cite: 10]
+        const currentPos = getPos(e);[cite: 10]
+        points.push(currentPos);[cite: 10]
         
-        if(points.length > 1) {[cite: 6]
-            drawLine(points[points.length-2], currentPos, currentPos.pressure);[cite: 6]
+        if(points.length > 1) {[cite: 10]
+            drawLine(points[points.length-2], currentPos, currentPos.pressure);[cite: 10]
         }
     };
     
-    const end = (e) => {  [cite: 6]
-        if (!drawing) return;[cite: 6]
-        e.preventDefault();[cite: 6]
-        drawing = false;[cite: 6]
-        c.classList.remove('canvas-firmando');[cite: 6]
+    const end = (e) => { [cite: 10]
+        if (!drawing) return;[cite: 10]
+        e.preventDefault();[cite: 10]
+        drawing = false;[cite: 10]
+        c.classList.remove('canvas-firmando');[cite: 10]
     };
 
-    c.style.touchAction = "none";[cite: 6]
-    c.addEventListener("pointerdown", start);[cite: 6]
-    c.addEventListener("pointermove", move);[cite: 6]
-    c.addEventListener("pointerup", end);[cite: 6]
-    c.addEventListener("pointercancel", end);[cite: 6]
-    c.addEventListener("pointerout", end);[cite: 6]
+    c.style.touchAction = "none";[cite: 10]
+    c.addEventListener("pointerdown", start);[cite: 10]
+    c.addEventListener("pointermove", move);[cite: 10]
+    c.addEventListener("pointerup", end);[cite: 10]
+    c.addEventListener("pointercancel", end);[cite: 10]
+    c.addEventListener("pointerout", end);[cite: 10]
     
     return {
         c, ctx, 
-        isSigned: () => wasUsed,[cite: 6]
-        reset: () => { [cite: 6]
-            wasUsed = false; drawing = false; imageData = null; points = [];[cite: 6]
-            ctx.clearRect(0, 0, c.width, c.height);[cite: 6]
+        isSigned: () => wasUsed,[cite: 10]
+        reset: () => { [cite: 10]
+            wasUsed = false; drawing = false; imageData = null; points = [];[cite: 10]
+            ctx.clearRect(0, 0, c.width, c.height);[cite: 10]
         }
     };
 }
