@@ -2,11 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Meta original restaurado para evitar que la pantalla salte o haga zoom al firmar en celular -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ramo - Acta de Entrega y Cambio de Turno</title>
     <link rel="stylesheet" href="estilos.css">
-    <!-- Vinculación del archivo de lógica corregido -->
-    <script src="script.js" defer></script>
 </head>
 <body>
 
@@ -43,7 +42,7 @@
                     <input type="date" id="fecha" class="input-readonly" readonly>
                 </div>
                 <div>
-                    <label for="area">Área de Production / Operación</label>
+                    <label for="area">Área de Producción / Operación</label>
                     <select id="area" required>
                         <option value="">-- Seleccione el Área --</option>
                         <option value="CALIDAD">CALIDAD</option>
@@ -207,5 +206,7 @@
         </form>
     </div>
 
+    <!-- EL SCRIPT DEBE IR AQUÍ AL FINAL (Igual que en tu código funcional original) -->
+    <script src="script.js"></script>
 </body>
 </html>
