@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramo - Acta de Entrega y Cambio de Turno</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Encabezado Corporativo Institucional -->
+        <header>
+            <img src="logo-ramo.png" alt="Logo Ramo" class="logo">
+            <h1>Acta de Entrega y Cambio de Turno</h1>
+            <p style="color: white; font-weight: 600; font-size: 0.95rem; margin-top: 5px; letter-spacing: 0.5px;">
+                CONTROL DE TURNOS
+            </p>
+        </header>
+
+        <!-- Bloque Normativo y de Responsabilidad -->
+        <div class="condiciones-uso" style="background-color: #fbfbfb; border-left: 4px solid var(--accent);">
+            <h3 style="text-transform: uppercase; font-size: 0.95rem; letter-spacing: 0.5px;">
+                Responsabilidad sobre Herramientas de Trabajo
+            </h3>
+            <p style="text-align: justify; margin-top: 5px;">
+                El presente registro documenta la recepción del dispositivo móvil asignado como herramienta para el desarrollo de sus actividades operativas. El colaborador que suscribe este documento certifica haber verificado el estado físico y técnico de los elementos relacionados en esta acta antes de proceder con su firma.
+            </p>
+        </div>
+
+        <form id="formulario">
+            
+            <!-- SECCIÓN 1: DATOS DEL COLABORADOR QUE RECIBE -->
+            <div class="seccion-header">
+                <span class="numero">1</span> Datos del Colaborador
+            </div>
+            
+            <div class="grid-2">
+                <div>
+                    <label for="fecha">Fecha Registro</label>
+                    <input type="date" id="fecha" class="input-readonly" readonly>
+                </div>
+                <div>
+                    <label for="area">Área de Producción / Operación</label>
+                    <select id="area" required>
+                        <option value="">-- Seleccione el Área --</option>
+                        <option value="CALIDAD">CALIDAD</option>
+                        <option value="GESTION HUMANA">GESTION HUMANA</option>
+                        <option value="LOGISTICA_DESPACHOS">LOGISTICA_DESPACHOS</option>
+                        <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+                        <option value="MANUFACTURA">MANUFACTURA</option>
+                        <option value="MEZCLAS">MEZCLAS</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 10px;">
+                <div>
+                    <label for="cedula">Cédula del Colaborador</label>
+                    <div class="input-group-search">
+                        <input type="text" id="cedula" placeholder="Digite cédula" required inputmode="numeric">
+                        <button type="button" class="btn-search" onclick="buscarColaborador()">Buscar</button>
+                    </div>
+                    <div id="msg-colaborador" class="msg-estado"></div>
+                </div>
+                <div>
+                    <label for="nombre_colaborador">Nombre Completo</label>
+                    <input type="text" id="nombre_colaborador" class="input-readonly" readonly required placeholder="Se auto-completa al buscar">
+                </div>
+            </div>
+
+
+            <!-- SECCIÓN 2: IDENTIFICACIÓN DEL DISPOSITIVO -->
+            <div class="seccion-header">
+                <span class="numero">2</span> Información del Equipo
+            </div>
+
+            <div class="grid-3">
+                <div>
+                    <label for="marca">Marca</label>
+                    <input type="text" id="marca" value="Samsung" class="input-readonly" readonly>
+                </div>
+                <div>
+                    <label for="modelo">Modelo</label>
+                    <input type="text" id="modelo" value="SM-G556B" class="input-readonly" readonly>
+                </div>
+                <div>
+                    <label for="serial">Serial del Equipo (Scan)</label>
+                    <input type="text" id="serial" placeholder="Escanee o digite el serial" required>
+                </div>
+            </div>
+
+
+            <!-- SECCIÓN 3: ESTADO DE CASILLAS ESPECÍFICAS -->
+            <div class="seccion-header">
+                <span class="numero">3</span> Condiciones de Entrega
+            </div>
+
+            <div class="accesorios-grid">
+                <!-- Ítem: Terminal Móvil -->
+                <div class="accesorio-card">
+                    <div class="acc-header">TERMINAL MÓVIL</div>
+                    <div class="acc-row">
+                        <span class="acc-label">Estado actual:</span>
+                        <select name="estado_terminal" required>
+                            <option value="Bueno">Bueno (B)</option>
+                            <option value="Regular">Regular (R)</option>
+                            <option value="Malo">Malo (M)</option>
+                        </select>
+                    </div>
+                    <input type="text" id="obs_terminal" placeholder="Observaciones de la terminal (Opcional)">
+                </div>
+
+                <!-- Ítem: Pantalla -->
+                <div class="accesorio-card">
+                    <div class="acc-header">PANTALLA</div>
+                    <div class="acc-row">
+                        <span class="acc-label">Estado actual:</span>
+                        <select name="estado_pantalla" required>
+                            <option value="Bueno">Bueno (B)</option>
+                            <option value="Regular">Regular (R)</option>
+                            <option value="Malo">Malo (M)</option>
+                        </select>
+                    </div>
+                    <input type="text" id="obs_pantalla" placeholder="Observaciones de pantalla (Opcional)">
+                </div>
+
+                <!-- Ítem: Batería -->
+                <div class="accesorio-card">
+                    <div class="acc-header">BATERÍA</div>
+                    <div class="acc-row">
+                        <span class="acc-label">Estado actual:</span>
+                        <select name="estado_bateria" required>
+                            <option value="Bueno">Bueno (B)</option>
+                            <option value="Regular">Regular (R)</option>
+                            <option value="Malo">Malo (M)</option>
+                        </select>
+                    </div>
+                    <input type="text" id="obs_bateria" placeholder="Observaciones de batería (Opcional)">
+                </div>
+
+                <!-- Ítem: Cargador -->
+                <div class="accesorio-card">
+                    <div class="acc-header">CARGADOR</div>
+                    <div class="acc-row">
+                        <span class="acc-label">Estado actual:</span>
+                        <select name="estado_cargador" required>
+                            <option value="Bueno">Bueno (B)</option>
+                            <option value="Regular">Regular (R)</option>
+                            <option value="Malo">Malo (M)</option>
+                        </select>
+                    </div>
+                    <input type="text" id="obs_cargador" placeholder="Observaciones de cargador (Opcional)">
+                </div>
+
+                <!-- Ítem: Cable Cargador -->
+                <div class="accesorio-card">
+                    <div class="acc-header">CABLE CARGADOR</div>
+                    <div class="acc-row">
+                        <span class="acc-label">Estado actual:</span>
+                        <select name="estado_cable" required>
+                            <option value="Bueno">Bueno (B)</option>
+                            <option value="Regular">Regular (R)</option>
+                            <option value="Malo">Malo (M)</option>
+                        </select>
+                    </div>
+                    <input type="text" id="obs_cable" placeholder="Observaciones de cable (Opcional)">
+                </div>
+
+                <!-- Ítem: SIM Card -->
+                <div class="accesorio-card">
+                    <div class="acc-header">SIM CARD</div>
+                    <div class="acc-row">
+                        <span class="acc-label">Estado actual:</span>
+                        <select name="estado_sim" required>
+                            <option value="Bueno">Bueno (B)</option>
+                            <option value="Regular">Regular (R)</option>
+                            <option value="Malo">Malo (M)</option>
+                        </select>
+                    </div>
+                    <input type="text" id="obs_sim" placeholder="Observaciones de SIM (Opcional)">
+                </div>
+            </div>
+
+
+            <!-- SECCIÓN 4: FIRMA ÚNICA -->
+            <div class="seccion-header">
+                <span class="numero">4</span> Confirmación y Firma
+            </div>
+
+            <div class="firmas-wrapper">
+                <div class="firma-card">
+                    <p style="font-weight: bold; margin-bottom: 5px;">FIRMA DEL COLABORADOR (QUIEN RECIBE)</p>
+                    <canvas id="canvas_colaborador" class="canvas-firma"></canvas>
+                    <button type="button" class="btn-clear" onclick="limpiarFirma('colab')">Limpiar Firma</button>
+                </div>
+            </div>
+
+            <!-- Zona de Envío -->
+            <div style="text-align: center; margin-top: 20px;">
+                <div id="estado-envio" style="font-weight: bold; margin-bottom: 10px;"></div>
+                <button type="submit" class="btn-principal">✓ Registrar Cambio de Turno</button>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+</html>
