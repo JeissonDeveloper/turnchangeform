@@ -173,11 +173,11 @@
                 <span class="numero">4</span> Confirmación y Firma
             </div>
 
-            <div class="firmas-wrapper">
+            <div class="grid-2 firmas-wrapper">
                 <div class="firma-card">
-                    <p style="font-weight: bold; margin-bottom: 5px;">FIRMA DEL COLABORADOR (QUIEN RECIBE)</p>
+                    <label>Quien Recibe</label>
                     <canvas id="canvas_colaborador" class="canvas-firma"></canvas>
-                    <button type="button" class="btn-clear" onclick="limpiarFirma('colab')">Limpiar Firma</button>
+                    <button type="button" class="btn-clear" onclick="limpiarFirma('colab')">Borrar Firma</button>
                 </div>
             </div>
 
@@ -189,7 +189,7 @@
         </form>
     </div>
 
-    <!-- SCRIPT UBICADO AL FINAL COMO EN EL ARCHIVO ORIGINAL -->
+    <!-- EL SCRIPT DEBE ESTAR AQUÍ, ANTES DEL CIERRE DEL BODY -->
     <script src="script.js"></script>
 </body>
 </html>
