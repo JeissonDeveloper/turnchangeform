@@ -13,7 +13,7 @@
             <img src="logo-ramo.png" alt="Logo Ramo" class="logo">
             <h1>Acta de Entrega y Cambio de Turno</h1>
             <p style="color: white; font-weight: 600; font-size: 0.95rem; margin-top: 5px; letter-spacing: 0.5px;">
-             CONTROL DE TURNOS
+               CONTROL DE TURNOS
             </p>
         </header>
 
@@ -66,16 +66,10 @@
                 </div>
             </div>
 
-            <!-- Nuevos campos mapeados de la base de datos (Agencia y Teléfono) -->
-            <div class="grid-2" style="margin-top: 10px;">
-                <div>
-                    <label for="agencia">Agencia</label>
-                    <input type="text" id="agencia" class="input-readonly" readonly required placeholder="Automático">
-                </div>
-                <div>
-                    <label for="telefono">Teléfono</label>
-                    <input type="text" id="telefono" class="input-readonly" readonly required placeholder="Automático">
-                </div>
+            <!-- Campo mapeado de la base de datos (Teléfono) -->
+            <div style="margin-top: 10px;">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" class="input-readonly" readonly required placeholder="Automático">
             </div>
 
             <div class="seccion-header">
@@ -202,7 +196,6 @@
         </form>
     </div>
 
-    <!-- EL SCRIPT DEBE ESTAR AQUÍ, ANTES DEL CIERRE DEL BODY -->
     <script src="script.js"></script>
 </body>
 </html>
