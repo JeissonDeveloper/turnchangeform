@@ -22,7 +22,6 @@ function mostrarPreview(datos) {
                 <div style="background:#f1f5f8; padding:15px; border-radius:8px; margin:15px 0;">
                     <p><strong>Recibe:</strong> ${datos.nombre_colaborador}</p>
                     <p><strong>Cédula:</strong> ${datos.cedula}</p>
-                    <p><strong>Agencia:</strong> ${datos.agencia}</p>
                     <p><strong>Teléfono:</strong> ${datos.telefono}</p>
                     <p><strong>Área:</strong> ${datos.area}</p>
                     <p><strong>Equipo:</strong> ${datos.marca} ${datos.modelo}</p>
@@ -98,9 +97,8 @@ window.buscarColaborador = async () => {
             msg.innerText = "✅ Información encontrada"; 
             msg.style.color = "var(--success)";
             
-            // Mapeo automático de los datos de la BD a los campos del formulario
+            // Mapeo automático de los datos de la BD (sin agencia)
             document.getElementById('nombre_colaborador').value = data.nombre_colaborador || "";
-            document.getElementById('agencia').value = data.agencia || "";
             document.getElementById('telefono').value = data.telefono || "";
             
             guardarBorrador(); 
@@ -108,7 +106,6 @@ window.buscarColaborador = async () => {
             msg.innerText = "❌ Cédula no registrada"; 
             msg.style.color = "var(--error)";
             document.getElementById('nombre_colaborador').value = "";
-            document.getElementById('agencia').value = "";
             document.getElementById('telefono').value = "";
         }
     } catch (err) {
@@ -121,9 +118,6 @@ window.buscarColaborador = async () => {
     }
 };
 
-/* ============================================================================
-   FUNCIÓN ORIGINAL DE FIRMA (Extraída textualmente del archivo v2.4)
-   ============================================================================ */
 function setupCanvas(id) {
     const c = document.getElementById(id);
     const ctx = c.getContext("2d", { willReadFrequently: true }); 
@@ -240,7 +234,6 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
         area: valInput("area"),
         cedula: valInput("cedula"),
         nombre_colaborador: valInput("nombre_colaborador"),
-        agencia: valInput("agencia"),
         telefono: valInput("telefono"),
         marca: valInput("marca"),
         modelo: valInput("modelo"),
